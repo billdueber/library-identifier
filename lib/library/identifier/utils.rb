@@ -2,7 +2,7 @@ module Library
   module Identifier
     module Utils
 
-      SEPARATOR_CHARS = "\\s;,"
+      SEPARATOR_CHARS = "\\s;,/"
       ID_CHARS        = "\\dXx"
       STUFFTOKEEP     = SEPARATOR_CHARS + ID_CHARS
       DITCH           = Regexp.new "[^#{STUFFTOKEEP}]+"
