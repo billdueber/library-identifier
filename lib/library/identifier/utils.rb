@@ -16,7 +16,7 @@ module Library
       def extract_digitstrings(str,
                                separator: DEFAULT_SEPARATOR,
                                allow_trailing_x: true,
-                               min: 0, max: 100)
+                               valid_lengths: :anylength)
 
         scanner = if allow_trailing_x
                     /\d+X?/
@@ -24,7 +24,10 @@ module Library
                     /\d+/
                   end
         str.upcase.gsub(/(\d)X(\d)/, '\1 \2').# any internal Xs need to be split on
-        split(separator).map {|x| x.gsub(/[^\dX]/, '').scan(scanner)}.flatten
+        split(separator).map {|x| x.gsub(/[^\dX]/, '').
+          scan(scanner)}.
+          flatten.
+          keep_if {|x| valid_length(valid_lengths, x.length)}
       end
 
 
@@ -32,6 +35,22 @@ module Library
       # @return String
       def extract_digitstring(*args, **kwargs)
         extract_digitstrings(*args, **kwargs).first
+      end
+
+
+      private
+      def valid_length(valid_lengths, length)
+        return true if valid_lengths == :anylength
+        case valid_lengths
+        when Range
+          valid_lengths.cover? length
+        when Array
+          valid_lengths.include? length
+        when Numeric
+          valid_lengths == length
+        else
+          raise "Don't know what to do with valid lengths of type #{valid_lengths.class}"
+        end
       end
 
 
