@@ -55,7 +55,7 @@ describe "Utility methods" do
 
     end
 
-    describe "valid lengths" do
+    describe "valid_lengths" do
 
       it "respects a number" do
         DSS['1234 12345 123', valid_lengths: 5].must_equal ['12345']

@@ -40,16 +40,16 @@ module Library
 
       private
       def valid_length(valid_lengths, length)
-        return true if valid_lengths == :anylength
+        return true if valid_lengths == :anylength or valid_lengths.nil?
         case valid_lengths
-        when Range
-          valid_lengths.cover? length
         when Array
           valid_lengths.include? length
         when Numeric
           valid_lengths == length
+        when Range
+          valid_lengths.cover? length
         else
-          raise "Don't know what to do with valid lengths of type #{valid_lengths.class}"
+          raise "Don't know what to do with valid_lengths argument of type #{valid_lengths.class}"
         end
       end
 
