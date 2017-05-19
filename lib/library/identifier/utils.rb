@@ -1,59 +1,78 @@
 module Library
   module Identifier
-    module Utils
 
-      DEFAULT_SEPARATOR = %r([\s;,/]+)
+    module IdentifierExtractor
+      extend self # everything is a module function
 
-      extend self; # make everything a module function
+      def extract_multi(str)
+        preprocess(str).
+          scan(scanner).
+          map {|x| postprocess(x)}.
+          delete_if {|x| !valid?(x)}
+      end
 
-      # A good extractor for ISBN/ISSN/OCLC
-      # @param str [String]  The raw string that you suspect may contain digitstrings
-      # @param separator [Regexp]  A regex used to split into multiple digitstrings
-      # @param allow_trailing_x [Boolean]  Whether the number can end in 'X'
-      # @param min [Number]  Smallest string allowed
-      # @param max [Number]  Largest string allowed
-      # @return [Array<String>] extracted digitstrings
-      def extract_digitstrings(str,
-                               separator: DEFAULT_SEPARATOR,
-                               allow_trailing_x: true,
-                               valid_lengths: :anylength)
+      alias_method :[], :extract_multi
 
-        scanner = if allow_trailing_x
-                    /\d+X?/
-                  else
-                    /\d+/
-                  end
-        str.upcase.gsub(/(\d)X(\d)/, '\1 \2').# any internal Xs need to be split on
-        split(separator).map {|x| x.gsub(/[^\dX]/, '').
-          scan(scanner)}.
-          flatten.
-          keep_if {|x| valid_length(valid_lengths, x.length)}
+      def extract_first(str)
+        extract_multi(str).first
       end
 
 
-      # Get just the first digitstring
-      # @return String
-      def extract_digitstring(*args, **kwargs)
-        extract_digitstrings(*args, **kwargs).first
+      def preprocess(str)
+        str
       end
 
 
-      private
-      def valid_length(valid_lengths, length)
-        return true if valid_lengths == :anylength or valid_lengths.nil?
-        case valid_lengths
-        when Array
-          valid_lengths.include? length
-        when Numeric
-          valid_lengths == length
-        when Range
-          valid_lengths.cover? length
-        else
-          raise "Don't know what to do with valid_lengths argument of type #{valid_lengths.class}"
-        end
+      def scanner
+        /\d+/
       end
 
 
+      def postprocess(str)
+        str
+      end
+
+
+      def valid?(str)
+        true
+      end
+    end
+
+    class ISBNExtractor
+      extend IdentifierExtractor
+
+
+      def self.scanner
+        /[\d\-]+X?/
+      end
+
+
+      def self.preprocess(str)
+        str.upcase
+      end
+
+
+      def self.postprocess(str)
+        str.gsub(/-/, '')
+      end
+
+
+      def self.valid?(str)
+        str.size == 10 or (str.size == 13 and str[-1] =~ /\d/)
+      end
+    end
+
+    class ISSNExtractor < ISBNExtractor
+
+      def self.scanner
+        /[\d\-]+/
+      end
+
+
+      def self.valid?(str)
+        str.size == 8
+      end
     end
   end
 end
+
