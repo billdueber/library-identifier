@@ -7,7 +7,7 @@ module Library
       def extract_multi(str)
         preprocess(str).
           scan(scanner).
-          map {|x| postprocess(x)}.
+          map {|x| postprocess_result(x)}.
           delete_if {|x| !valid?(x)}
       end
 
@@ -17,21 +17,17 @@ module Library
         extract_multi(str).first
       end
 
+      def scanner
+        /\d+/
+      end
 
       def preprocess(str)
         str
       end
 
-
-      def scanner
-        /\d+/
-      end
-
-
-      def postprocess(str)
+      def postprocess_result(str)
         str
       end
-
 
       def valid?(str)
         true
@@ -41,21 +37,17 @@ module Library
     class ISBNExtractor
       extend IdentifierExtractor
 
-
       def self.scanner
         /[\d\-]+X?/
       end
-
 
       def self.preprocess(str)
         str.upcase
       end
 
-
-      def self.postprocess(str)
+      def self.postprocess_result(str)
         str.gsub(/-/, '')
       end
-
 
       def self.valid?(str)
         str.size == 10 or (str.size == 13 and str[-1] =~ /\d/)
@@ -64,10 +56,10 @@ module Library
 
     class ISSNExtractor < ISBNExtractor
 
+      # ISSNs can't contain a trailing 'X' and are always 8 digits long
       def self.scanner
         /[\d\-]+/
       end
-
 
       def self.valid?(str)
         str.size == 8
