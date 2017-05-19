@@ -2,7 +2,7 @@ require 'minitest-helper'
 require 'library/identifier'
 
 describe "Utility methods" do
-  ME = Library::Identifier::IdentifierExtractor
+  ME = Library::Identifier::Extractor
 
   describe "digit string extraction" do
     describe "basics" do

@@ -1,7 +1,7 @@
 module Library
   module Identifier
 
-    module IdentifierExtractor
+    module Extractor
       extend self # everything is a module function
 
       def extract_multi(str)
@@ -35,7 +35,7 @@ module Library
     end
 
     class ISBNExtractor
-      extend IdentifierExtractor
+      extend Extractor
 
       def self.scanner
         /[\d\-]+X?/
