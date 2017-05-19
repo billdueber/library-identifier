@@ -2,52 +2,58 @@ require 'minitest-helper'
 require 'library/identifier'
 
 describe "Utility methods" do
-  SE = Library::Identifier::ExtractorFactory.single_extractor
-  ME = Library::Identifier::ExtractorFactory.multi_extractor
+  ME = Library::Identifier::IdentifierExtractor
 
   describe "digit string extraction" do
     describe "basics" do
       it "leaves a set of digits alone" do
-        SE['123456'].must_equal '123456'
+        ME['123456'].must_equal ['123456']
       end
 
       it "is ok with no matches" do
-        SE['hello world'].must_be_nil
         ME['hello world'].must_be_empty
       end
 
       it "pulls out of the middle of a string" do
-        SE['   123   '].must_equal '123'
+        ME['   123   '].must_equal ['123']
       end
 
-      it "throws away garbage" do
-        SE['ISBN: 123-455-4321 (pb.)'].must_equal '1234554321'
-      end
 
       it "finds multiple" do
         ME['12345 and 7890'].must_equal ['12345', '7890']
       end
 
+    end
+
+    describe "ISBN" do
+      ISBN = Library::Identifier::ISBNExtractor
+
+      it "throws away garbage" do
+        ISBN['ISBN: 123-455-4321 (pb.)'].must_equal ['1234554321']
+      end
+
+
       it "pulls out some complex stuff" do
-        ME['  (hb) 12345-67-890; 44/55'].must_equal ['1234567890', '44', '55']
-      end
-    end
-
-    describe "Dealing with trailing 'X'" do
-
-      it "can handle and upcase an X" do
-        SE['  blah blah 12345x'].must_equal '12345X'
-      end
-
-      it "splits with an x in the middle of a digitstring" do
-        ME[' 123X45'].must_equal ['123', '45']
-      end
-
-      it "works correctly with double-x" do
-        SE[' 1234XX'].must_equal '1234X'
+        ISBN['  (hb) 12345-67-890; 44/55 123456789X'].must_equal ['1234567890', '123456789X']
       end
 
     end
+
+    # describe "Dealing with trailing 'X'" do
+    #
+    #   it "can handle and upcase an X" do
+    #     SE['  blah blah 12345x'].must_equal '12345X'
+    #   end
+    #
+    #   it "splits with an x in the middle of a digitstring" do
+    #     ME[' 123X45'].must_equal ['123', '45']
+    #   end
+    #
+    #   it "works correctly with double-x" do
+    #     SE[' 1234XX'].must_equal '1234X'
+    #   end
+    #
+    # end
 
     # describe "valid_lengths" do
     #
