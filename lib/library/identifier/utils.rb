@@ -1,7 +1,7 @@
 module Library
   module Identifier
 
-    module Extractor
+    module BasicExtractor
       extend self # everything is a module function
 
       def extract_multi(str)
@@ -34,27 +34,7 @@ module Library
       end
     end
 
-    class ISBNExtractor
-      extend Extractor
-
-      def self.scanner
-        /[\d\-]+X?/
-      end
-
-      def self.preprocess(str)
-        str.upcase
-      end
-
-      def self.postprocess_result(str)
-        str.gsub(/-/, '')
-      end
-
-      def self.valid?(str)
-        str.size == 10 or (str.size == 13 and str[-1] =~ /\d/)
-      end
-    end
-
-    class ISSNExtractor < ISBNExtractor
+    class ISSNExtractor
 
       # ISSNs can't contain a trailing 'X' and are always 8 digits long
       def self.scanner
