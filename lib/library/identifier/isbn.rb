@@ -24,6 +24,8 @@ module Library::Identifier
     end
 
     class << self
+      # Use a class method to extract the first ISBN-like thing
+      # and turn it into an ISBN object
       def from(orig)
         parsed = Extractor.extract_first(orig)
         if parsed.nil?
@@ -33,13 +35,13 @@ module Library::Identifier
         end
       end
 
+      # Like from, but returns a (potentially empty) array
       def all_from(orig)
         Extractor.extract_multi(orig).map {|parsed| self.new(orig, parsed)}
       end
 
       alias_method :[], :from
     end
-
 
     def isbn10
       @isbn10 ||= convert_to_10(@isbn13)
@@ -55,10 +57,12 @@ module Library::Identifier
       @valid ||= !!(isbn10_valid? or isbn13_valid?)
     end
 
+    # Check validity of checkdigit for the ISBN10 if we have one
     def isbn10_valid?
       @isbn10 and (@isbn10[-1] == checkdigit_10(@isbn10))
     end
 
+    # Check validity of checkdigit for the ISBN13 if we have one
     def isbn13_valid?
       @isbn13 and (@isbn13[-1] == checkdigit_13(@isbn13))
     end
@@ -97,9 +101,14 @@ module Library::Identifier
       return check.to_s
     end
 
+    # See if this is a Null ISBN. If we're here,
+    # it never is. Provided as a convenience to
+    # mirror API of NullISBN
     def null?
       false
     end
+
+    attr_reader :orig, :parsed
 
     # Private initialize method
     # use #from or #all_from
@@ -120,9 +129,13 @@ module Library::Identifier
   end
 
   class NullISBN < ISBN
+    # Yup. We're null
     def null?
       true
     end
+
+    alias_method :error, :parsed
+
   end
 
 end
