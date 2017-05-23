@@ -1,4 +1,6 @@
 require 'library/identifier/utils'
+require 'library/identifier/isbn/class_methods'
+require 'library/identifier/isbn/extractor'
 
 module Library::Identifier
   class ISBN
@@ -23,25 +25,6 @@ module Library::Identifier
       end
     end
 
-    class << self
-      # Use a class method to extract the first ISBN-like thing
-      # and turn it into an ISBN object
-      def from(orig)
-        parsed = Extractor.extract_first(orig)
-        if parsed.nil?
-          NullISBN.new(orig, "No ISBN found")
-        else
-          self.new(orig, parsed)
-        end
-      end
-
-      # Like from, but returns a (potentially empty) array
-      def all_from(orig)
-        Extractor.extract_multi(orig).map {|parsed| self.new(orig, parsed)}
-      end
-
-      alias_method :[], :from
-    end
 
     def isbn10
       @isbn10 ||= convert_to_10(@isbn13)
@@ -125,16 +108,6 @@ module Library::Identifier
     end
 
     private_class_method :initialize
-
-  end
-
-  class NullISBN < ISBN
-    # Yup. We're null
-    def null?
-      true
-    end
-
-    alias_method :error, :parsed
 
   end
 
