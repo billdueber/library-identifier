@@ -8,7 +8,7 @@ module Library
         preprocess(str).
           scan(scanner).
           map {|x| postprocess_result(x)}.
-          delete_if {|x| !valid?(x)}
+          delete_if {|x| !valid_syntax?(x)}
       end
 
       alias_method :[], :extract_multi
@@ -29,7 +29,7 @@ module Library
         str
       end
 
-      def valid?(str)
+      def valid_syntax?(str)
         true
       end
     end
