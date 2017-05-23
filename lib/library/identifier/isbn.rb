@@ -1,31 +1,13 @@
 require 'library/identifier/utils'
-
+require 'library/identifier/isbn/extractor'
 module Library::Identifier
   class ISBN
-    class Extractor
-      extend Library::Identifier::BasicExtractor
-      class << self
-        def scanner
-          /[\d\-]+X?\b/
-        end
 
-        def preprocess(str)
-          str.upcase
-        end
-
-        def postprocess_result(str)
-          str.gsub(/-/, '')
-        end
-
-        def valid?(str)
-          str.size == 10 or (str.size == 13 and str[-1] =~ /\d/)
-        end
-      end
-    end
+    DEFAULT_ISBN_EXTRACTOR = Extractor.new
 
     class << self
-      def from(orig)
-        parsed = Extractor.extract_first(orig)
+      def from(orig, extractor: DEFAULT_ISBN_EXTRACTOR)
+        parsed = extractor.extract_first(orig)
         if parsed.nil?
           NullISBN.new(orig, "No ISBN found")
         else
@@ -33,8 +15,8 @@ module Library::Identifier
         end
       end
 
-      def all_from(orig)
-        Extractor.extract_multi(orig).map {|parsed| self.new(orig, parsed)}
+      def all_from(orig, extractor: DEFAULT_ISBN_EXTRACTOR)
+        extractor.extract_multi(orig).map {|parsed| self.new(orig, parsed)}
       end
 
       alias_method :[], :from
