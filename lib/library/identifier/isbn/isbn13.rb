@@ -1,5 +1,5 @@
 module Library::Identifier
-  class ISBN
+  module ISBNIncludes
     module ISBN13
       def isbn13_valid?(isbn13)
         isbn13 and (isbn13[-1] == checkdigit_13(isbn13))

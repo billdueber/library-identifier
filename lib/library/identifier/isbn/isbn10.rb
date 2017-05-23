@@ -1,5 +1,5 @@
 module Library::Identifier
-  class ISBN
+  module ISBNIncludes
     module ISBN10
 
       def derive_10_from_13(isbn13)

@@ -1,7 +1,7 @@
 require 'library/identifier/utils'
 
 module Library::Identifier
-  class ISBN
+  class ISBN < Numeric
     class Extractor
       include Library::Identifier::BasicExtractor
 

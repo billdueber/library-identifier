@@ -2,39 +2,16 @@ require 'library/identifier/utils'
 require 'library/identifier/isbn/extractor'
 require 'library/identifier/isbn/isbn10'
 require 'library/identifier/isbn/isbn13'
-require 'library/identifier/isbn/null'
+require 'library/identifier/null'
 
 module Library::Identifier
-  class ISBN
+  class ISBN < Numeric
 
     # Split 10/13 stuff into their own modules
     # for organizational purposes, but now
     # I'll just pull them back in
-    include ISBN10
-    include ISBN13
-
-    DEFAULT_ISBN_EXTRACTOR = Extractor.new
-
-    # Return the first viable ISBN from the passsed
-    # string using the given extractor
-    def self.from(orig, extractor: DEFAULT_ISBN_EXTRACTOR)
-      if parsed = extractor.extract_first(orig)
-        self.new(orig, parsed)
-      else
-        NullISBN.new(orig, "No ISBN found")
-      end
-    end
-
-    # Return an array of all viable ISBN from the passsed
-    # string using the given extractor
-    def self.all_from(orig, extractor: DEFAULT_ISBN_EXTRACTOR)
-      extractor.extract_multi(orig).map {|parsed| self.new(orig, parsed)}
-    end
-
-    class << self
-      # Convenience: ISBN[my_raw_str]
-      alias_method :[], :from
-    end
+    include ISBNIncludes::ISBN10
+    include ISBNIncludes::ISBN13
 
     # Lazily produce the 10-digit version if given 13
     def isbn10
