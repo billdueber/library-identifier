@@ -3,6 +3,9 @@ require 'library/identifier/isbn/validation_and_conversion'
 require 'library/identifier/isbn/extractor'
 
 module Library::Identifier
+
+  # Extract and mess with ISBNs, in both their 10-character
+  # and 13-digit versions.
   class ISBN
 
     # Pull in the extractor

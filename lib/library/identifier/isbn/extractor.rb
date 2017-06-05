@@ -2,6 +2,12 @@ require 'library/identifier/basic_extractor'
 require 'library/identifier/isbn'
 
 class Library::Identifier::ISBN
+
+  # The ISBN version of the extractor allows any string of
+  # digits and dashes, possibly ending in an 'X'
+  #
+  # The validation then makes sure it's the right length
+  # (10, possibly ending with X, or 13 digits)
   module Extractor
     extend Library::Identifier::BasicExtractor
     class << self
