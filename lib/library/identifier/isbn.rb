@@ -1,6 +1,7 @@
-require 'library/identifier/isbn/class_methods'
+require 'library/identifier/mixins/class_methods'
 require 'library/identifier/isbn/validation_and_conversion'
 require 'library/identifier/isbn/extractor'
+require 'library/identifier/isbn/null_isbn'
 
 module Library::Identifier
 
@@ -12,7 +13,11 @@ module Library::Identifier
     extend Library::Identifier::ISBN::Extractor
 
     # Pull in class methods .from and .all_from
-    extend Library::Identifier::ISBN::ClassMethods
+    extend Library::Identifier::ClassMethods
+
+    # Set the appropriate null class
+    self.null_class = Library::Identifier::ISBN::NullISBN
+
 
     # Get the conversion methods, useful as both
     # instance methods and class methods

@@ -1,20 +1,23 @@
-require 'library/identifier/isbn'
+module Library::Identifier
+  class ISBN
 
-# Check validity of checkdigit for the ISBN13 if we have one
-class NullISBN < ISBN
+    class NullISBN < ISBN
 
-  attr_accessor :error
-  # Call the superclass and set the error
-  def initialize(orig, err)
-    super
-    @parsed = :null
-    @orig = orig
-    @error = err
-  end
+      attr_accessor :error
+      # Call the superclass and set the error
+      def initialize(orig, err)
+        super
+        @parsed = :null
+        @orig   = orig
+        @error  = err
+      end
 
-  # Yup. We're null
-  def null?
-    true
+      # Yup. We're null
+      def null?
+        true
+      end
+
+    end
   end
 
 end

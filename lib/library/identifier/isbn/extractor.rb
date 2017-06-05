@@ -1,5 +1,4 @@
-require 'library/identifier/basic_extractor'
-require 'library/identifier/isbn'
+require 'library/identifier/mixins/basic_extractor'
 
 class Library::Identifier::ISBN
 
