@@ -64,17 +64,6 @@ module Library
       end
     end
 
-    class ISSNExtractor
-
-      # ISSNs can't contain a trailing 'X' and are always 8 digits long
-      def self.scanner
-        /[\d\-]+/
-      end
-
-      def self.valid?(str)
-        str.size == 8
-      end
-    end
   end
 end
 
