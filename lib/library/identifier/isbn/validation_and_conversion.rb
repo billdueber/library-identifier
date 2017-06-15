@@ -12,15 +12,18 @@ class Library::Identifier::ISBN
 
     # Check validity of checkdigit for the ISBN13 if we have one
     def isbn13_valid?(isbn13 = self.isbn13)
-      isbn13 and valid_isbn_13_prefix?(isbn13) and (@isbn13[-1] == checkdigit_13(isbn13))
+      isbn13 and convertable_to_isbn10?(isbn13) and (@isbn13[-1] == checkdigit_13(isbn13))
     end
 
-    def valid_isbn_13_prefix?(isbn13)
+    # Only certain ISBN-13s can be converted to
+    # an ISBN10
+    def convertable_to_isbn10?(isbn13)
       isbn13 =~ /\A97[89]/
     end
+
     # Convert a valid 13 digit ISBN to a 10-char
     def convert_to_10(isbn13 = self.isbn13)
-      return nil unless valid_isbn_13_prefix?(isbn13)
+      return nil unless convertable_to_isbn10?(isbn13)
       base = isbn13[3..11]
       base << checkdigit_10(base)
     end

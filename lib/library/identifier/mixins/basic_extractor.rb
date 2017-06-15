@@ -5,6 +5,7 @@ module Library
 
     class ProcessedPair
       extend Dry::Initializer::Mixin
+
       param :original
       param :processed
     end
@@ -29,7 +30,7 @@ module Library
         preprocess(str).
           scan(scanner).
           map {|x| ProcessedPair.new(x, postprocess_result(x))}.
-          delete_if {|pp| !valid_looking_string?(pp.original)}
+          delete_if {|pp| !valid_looking_string?(pp.processed)}
       end
 
       alias_method :[], :extract_multi

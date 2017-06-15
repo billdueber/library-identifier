@@ -17,8 +17,8 @@ module Library::Identifier
 
     # Like from, but returns a (potentially empty) array
     def all_from(orig)
-      Extractor.extract_multi(orig).map do |processed_pair|
-        self.new(processed_pair.original, processed_pair.parsed)
+      all = self::Extractor.extract_multi(orig).map do |processed_pair|
+        self.factory.from(processed_pair.original, processed_pair.processed)
       end
     end
 
