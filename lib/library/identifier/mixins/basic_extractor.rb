@@ -1,5 +1,13 @@
+require 'dry-initializer'
+
 module Library
   module Identifier
+
+    class ProcessedPair
+      extend Dry::Initializer::Mixin
+      param :original
+      param :processed
+    end
 
     # The role of the extractor is to pull out every string of characters
     # that *looks like* it could be a valid identifier (e.g., ignoring things
@@ -15,16 +23,20 @@ module Library
       #
       # Preprocesses the submitted string, and
       # post-processes anything found.
+      # @param [String] the string from which to extract
+      # @return [Array<ProcessedPair>] a set of original/processed pairs
       def extract_multi(str)
         preprocess(str).
           scan(scanner).
-          map {|x| postprocess_result(x)}.
-          delete_if {|x| !valid_looking_string?(x)}
+          map {|x| ProcessedPair.new(x, postprocess_result(x))}.
+          delete_if {|pp| !valid_looking_string?(pp.original)}
       end
 
       alias_method :[], :extract_multi
 
       # Get only the first likely-looking string
+      # @param [String] the string from which to extract
+      # @return [ProcessedPair] an original/processed pair
       def extract_first(str)
         extract_multi(str).first
       end

@@ -51,12 +51,21 @@ module Library::Identifier
       false
     end
 
-    attr_reader :orig, :parsed
+    # All held versions of this ISBN
+    #   * the original string passed in
+    #   * the ISBN10, if one exists
+    #   * the ISBN13
+    def all_versions
+      [original, isbn10, isbn13].compact
+    end
+
+
+    attr_reader :original, :parsed
 
     # Private initialize method
     # use #from or #all_from
     def initialize(orig, parsed)
-      @orig = orig
+      @original = orig
       case parsed.size
       when 10
         @isbn10 = parsed

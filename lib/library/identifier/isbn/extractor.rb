@@ -22,7 +22,7 @@ class Library::Identifier::ISBN
         str.gsub(/-/, '')
       end
 
-      def valid?(str)
+      def valid_looking_string?(str)
         str.size == 10 or (str.size == 13 and str[-1] =~ /\d/)
       end
     end

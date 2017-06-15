@@ -7,17 +7,19 @@ module Library::Identifier
     # Use a class method to extract the first identifier-like thing
     # and turn it into an appropriate object
     def from(orig)
-      parsed = self::Extractor.extract_first(orig)
+      processed_pair = self::Extractor.extract_first(orig)
       if parsed.nil?
         self.null_class.new(orig, "No #{self.to_s} found")
       else
-        self.new(orig, parsed)
+        self.new(processed_pair.original, processed_pair.processed)
       end
     end
 
     # Like from, but returns a (potentially empty) array
     def all_from(orig)
-      Extractor.extract_multi(orig).map {|parsed| self.new(orig, parsed)}
+      Extractor.extract_multi(orig).map do |processed_pair|
+        self.new(processed_pair.original, processed_pair.parsed)
+      end
     end
 
     alias_method :[], :from
