@@ -36,7 +36,7 @@ module Library::Identifier
 
     # Do we have a valid checksum?
     def valid?
-      @valid ||= !!(isbn10_valid? or isbn13_valid?)
+      @valid ||= (@isbn10 and isbn10_valid?) or (@isbn13 and isbn13_valid?)
     end
 
     # Default to the 13 digit version for

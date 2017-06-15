@@ -20,6 +20,7 @@ class Library::Identifier::ISBN
     end
     # Convert a valid 13 digit ISBN to a 10-char
     def convert_to_10(isbn13 = self.isbn13)
+      return nil unless valid_isbn_13_prefix?(isbn13)
       base = isbn13[3..11]
       base << checkdigit_10(base)
     end
