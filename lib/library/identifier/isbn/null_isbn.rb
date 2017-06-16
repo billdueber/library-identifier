@@ -4,10 +4,8 @@ module Library::Identifier
     class NullISBN < ISBN
       attr_accessor :error
       # Call the superclass and set the error
-      def initialize(orig, err)
-        super
-        @parsed = :null
-        self.original   = orig
+      def initialize(orig, parsed, err)
+        super(orig, parsed)
         @error  = err
       end
 

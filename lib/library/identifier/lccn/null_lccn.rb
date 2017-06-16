@@ -1,7 +1,7 @@
 module Library::Identifier
-  class ISSN
+  class LCCN
 
-    class NullISSN < ISSN
+    class NullLCCN < LCCN
 
       def to_s
         ''
@@ -10,7 +10,7 @@ module Library::Identifier
       def null?
         true
       end
-
+      
       def normalized
         ""
       end

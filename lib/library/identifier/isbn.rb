@@ -13,7 +13,7 @@ module Library::Identifier
   # never happen.
   class ISBNFactory
     def from(orig, processed)
-      return ISBN::NullISBN.new(orig, processed) unless processed
+      return ISBN::NullISBN.new(orig, processed, "Not recognized as ISBN") unless processed
       isbn = ISBN.new(orig, processed)
       if isbn.valid?
         isbn
@@ -78,10 +78,13 @@ module Library::Identifier
     #   * the ISBN10, if one exists
     #   * the ISBN13
     def all_versions
-      [original, isbn10, isbn13].compact
+      [original, isbn10, isbn13].uniq.compact
     end
 
-    #
+    # The normalized verison is the 13, same as stringified
+    def normalized
+      isbn13
+    end
 
 
     attr_accessor :original

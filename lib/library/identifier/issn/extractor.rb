@@ -2,11 +2,8 @@ require 'library/identifier/mixins/basic_extractor'
 
 class Library::Identifier::ISSN
 
-  # The ISBN version of the extractor allows any string of
-  # digits and dashes, possibly ending in an 'X'
-  #
-  # The validation then makes sure it's the right length
-  # (10, possibly ending with X, or 13 digits)
+  # ISSNs are just chars, 7 digits followed by a digit
+  # or an X
   module Extractor
     extend Library::Identifier::BasicExtractor
     class << self

@@ -6,9 +6,16 @@ module Library::Identifier
     # An invalid ISBN has an original string,
     # hence isn't null, but isn't valid? either
     class InvalidISBN < NullISBN
-      def initialize(orig, _)
-        super
-        self.original = orig
+      def initialize(orig, parsed)
+        super(orig, parsed, "Invalid")
+      end
+
+      def normalized
+        ""
+      end
+
+      def to_s
+        ""
       end
 
       def valid?
