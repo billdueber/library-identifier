@@ -94,7 +94,8 @@ module Library::Identifier
     # use #from or #all_from
     # or the factory
     def initialize(orig, parsed)
-      self.original = orig
+      @original = orig
+      @parsed = parsed
       case parsed.size
       when 10
         @isbn10 = parsed

@@ -1,24 +1,9 @@
+require 'library/identifier/mixins/null_id'
+
 module Library::Identifier
   class ISBN
 
-    class NullISBN < ISBN
-      attr_accessor :error
-      # Call the superclass and set the error
-      def initialize(orig, parsed, err)
-        super(orig, parsed)
-        @error  = err
-      end
-
-      # Yup. We're null
-      def null?
-        true
-      end
-
-      # Defaults for a null class
-      def valid?
-        false
-      end
-
+    class NullISBN < NullID
       def isbn10
         nil
       end

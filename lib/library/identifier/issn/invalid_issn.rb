@@ -1,19 +1,9 @@
-require_relative 'null_issn'
+require 'library/identifier/mixins/invalid_id'
 
 module Library::Identifier
   class ISSN
-
-    # An invalid ISBN has an original string,
-    # hence isn't null, but isn't valid? either
     class InvalidISSN < ISSN
-     def valid?
-        false
-      end
-
-      def null?
-        false
-      end
-
+      include Library::Identifier::InvalidID
     end
   end
 end

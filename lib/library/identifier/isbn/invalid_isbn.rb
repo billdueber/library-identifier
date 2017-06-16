@@ -1,33 +1,21 @@
-require_relative 'null_isbn'
+require 'library/identifier/mixins/invalid_id'
 
 module Library::Identifier
   class ISBN
+    class InvalidISBN < ISBN
 
-    # An invalid ISBN has an original string,
-    # hence isn't null, but isn't valid? either
-    class InvalidISBN < NullISBN
-      def initialize(orig, parsed)
-        super(orig, parsed, "Invalid")
+      include Library::Identifier::InvalidID
+
+      def isbn10
+        nil
       end
 
-      def normalized
-        ""
-      end
-
-      def to_s
-        ""
-      end
-
-      def valid?
-        false
-      end
-
-      def null?
-        false
+      def isbn13
+        nil
       end
 
       def all_versions
-        [original]
+        [parsed]
       end
     end
   end

@@ -1,24 +1,7 @@
+require 'library/identifier/mixins/null_id'
 module Library::Identifier
   class ISSN
-
-    class NullISSN < ISSN
-
-      def to_s
-        ''
-      end
-
-      def null?
-        true
-      end
-
-      def normalized
-        ""
-      end
-
-      def valid?
-        false
-      end
-
+    class NullISSN < NullID
     end
   end
 end

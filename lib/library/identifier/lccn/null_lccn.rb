@@ -1,24 +1,7 @@
+require 'library/identifier/mixins/null_id'
 module Library::Identifier
   class LCCN
-
-    class NullLCCN < LCCN
-
-      def to_s
-        ''
-      end
-
-      def null?
-        true
-      end
-      
-      def normalized
-        ""
-      end
-
-      def valid?
-        false
-      end
-
+    class NullLCCN < NullID
     end
   end
 end
