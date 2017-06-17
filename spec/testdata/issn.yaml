@@ -35,6 +35,10 @@ extract_single:
     - Needs to be long enough
     - '1234-567 (isbn 3)'
     - ~
+  -
+    - Needs to not be too long
+    - 'exp: 1234-56789X'
+    - ~
 
 extract_multiple:
   -
@@ -45,3 +49,7 @@ extract_multiple:
     - Junk in the middle
     - pb 12345-678, elec. 2345-6789
     - ['12345678', '23456789']
+  -
+    - Finds good, ignores bad
+    - toolong 1234-56-7890, issn 1234-5678
+    - ['12345678']
