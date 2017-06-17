@@ -1,7 +1,12 @@
 require 'rspec/core'
 require 'rspec/expectations'
 
-$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+TOPDIR = File.realpath(File.join(File.dirname(__FILE__), '..'))
+$:.unshift File.join(TOPDIR, 'lib')
+SPECDIR = File.join(TOPDIR, 'spec')
+SPECDATADIR = File.join(SPECDIR, 'testdata')
+puts "Specdatadir is #{SPECDATADIR}"
+
 require 'library/identifier'
 
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
