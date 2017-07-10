@@ -7,7 +7,7 @@ class Library::Identifier::ISBN
   #
   # The validation then makes sure it's the right length
   # (10, possibly ending with X, or 13 digits)
-  module Extractor
+  class Extractor
     extend Library::Identifier::BasicExtractor
     class << self
       def scanner
